@@ -116,6 +116,19 @@ func (s *Sheet) Append(notation string, values [][]string) error {
 	)
 }
 
+func (s *Sheet) Clear(notation string) error {
+	_, err := s.Service.
+		Spreadsheets.
+		Values.
+		Clear(
+			s.Spreadsheet.SpreadsheetId,
+			s.Sheet.Properties.Title+"!"+notation,
+			&sheets.ClearValuesRequest{},
+		).
+		Do()
+	return err
+}
+
 func (s *Sheet) InsertRows(start int, rows [][]string) error {
 	rowData := make([]*sheets.RowData, len(rows))
 	for i, row := range rows {
